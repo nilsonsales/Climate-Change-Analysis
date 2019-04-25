@@ -12,14 +12,16 @@ options(warn=-1)
 
 # Removing the empty lines
 temperature <- row_data[complete.cases(row_data),]
-head(temperature)
 
 # Converting dates to the specific date type
 temperature$dt <- as.Date(temperature$dt, format="%Y-%m-%d")
 
+# Taking a look at our data
+head(temperature)
+tail(temperature)
 
 
-##### Analysing Brazil, US, UK, Japan and South Africa's temperatures #####
+##### Analysing Brazil, United States, United Kigdom, Japan and South Africa's temperatures #####
 
 ## Brazil
 tempBrazil <- temperature[ which(temperature$Country=="Brazil"),]
@@ -28,7 +30,7 @@ ggplot(data = tempBrazil) +
   geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
   geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
   scale_color_gradient(low="blue", high="red") +
-  xlab("Year") + ylab("Temperature") +
+  xlab("Year") + ylab("Temperature (°C)") +
   ggtitle("Brazil Average Temperature 1932-2013") + theme(plot.title = element_text(hjust = 0.5)) +
   labs(colour = "Temp")
 
@@ -41,7 +43,7 @@ ggplot(data = tempBrazil) +
   geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
   geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
   scale_color_gradient(low="blue", high="red") +
-  xlab("Year") + ylab("Temperature") +
+  xlab("Year") + ylab("Temperature (°C)") +
   ggtitle("Brazil Average Temperature 1932-2013") + theme(plot.title = element_text(hjust = 0.5)) +
   labs(colour = "Temp")
 
@@ -64,7 +66,7 @@ ggplot(data = tempUS) +
   geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
   geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
   scale_color_gradient(low="blue", high="red") +
-  xlab("Year") + ylab("Temperature") +
+  xlab("Year") + ylab("Temperature (°C)") +
   ggtitle("US Average Temperature 1768-2013") + theme(plot.title = element_text(hjust = 0.5)) +
   labs(colour = "Temp")
 
@@ -87,7 +89,7 @@ ggplot(data = tempUK) +
   geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
   geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
   scale_color_gradient(low="blue", high="red") +
-  xlab("Year") + ylab("Temperature") +
+  xlab("Year") + ylab("Temperature (°C)") +
   ggtitle("UK Average Temperature 1743-2013") + theme(plot.title = element_text(hjust = 0.5)) +
   labs(colour = "Temp")
 
@@ -103,7 +105,7 @@ ggplot(data = tempJapan) +
   geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
   geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
   scale_color_gradient(low="blue", high="red") +
-  xlab("Year") + ylab("Temperature") +
+  xlab("Year") + ylab("Temperature (°C)") +
   ggtitle("Japan Average Temperature 1841-2013") + theme(plot.title = element_text(hjust = 0.5)) +
   labs(colour = "Temp")
 
@@ -119,6 +121,6 @@ ggplot(data = tempSA) +
   geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
   geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
   scale_color_gradient(low="blue", high="red") +
-  xlab("Year") + ylab("Temperature") +
+  xlab("Year") + ylab("Temperature (°C)") +
   ggtitle("South Africa Average Temperature 1857-2013") + theme(plot.title = element_text(hjust = 0.5)) +
   labs(colour = "Temp")
