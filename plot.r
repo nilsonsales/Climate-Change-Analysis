@@ -165,3 +165,134 @@ ggplot(data = tempSA) +
   xlab("Year") + ylab("Temperature (°C)") +
   ggtitle("South Africa Average Temperature 1857-2013") + theme(plot.title = element_text(hjust = 0.5)) +
   labs(colour = "Temp")
+
+
+#### Now lets separete it per season and compare
+#### two countries in different hemispheres
+
+## Brazil
+
+# Reload the full dataset
+tempBrazil <- temperature[ which(temperature$Country=="Brazil"),]
+
+# Creating subsets with the seasons
+summer <- tempBrazil[ which( as.numeric(format(tempBrazil$dt, "%m")) == 12 | as.numeric(format(tempBrazil$dt, "%m")) <= 2 ),]
+summer <- aggregate(x = summer, 
+                    by = list(year = substr(summer$dt, 1, 4)),
+                    FUN = mean)
+
+fall <- tempBrazil[ which( as.numeric(format(tempBrazil$dt, "%m")) > 2 & as.numeric(format(tempBrazil$dt, "%m")) <= 5 ),]
+fall <- aggregate(x = fall, 
+                  by = list(year = substr(fall$dt, 1, 4)),
+                  FUN = mean)
+
+winter <- tempBrazil[ which( as.numeric(format(tempBrazil$dt, "%m")) > 5 & as.numeric(format(tempBrazil$dt, "%m")) <= 8 ),]
+winter <- aggregate(x = winter, 
+                    by = list(year = substr(winter$dt, 1, 4)),
+                    FUN = mean)
+
+spring <- tempBrazil[ which( as.numeric(format(tempBrazil$dt, "%m")) > 8 & as.numeric(format(tempBrazil$dt, "%m")) <= 11 ),]
+spring <- aggregate(x = spring, 
+                    by = list(year = substr(spring$dt, 1, 4)),
+                    FUN = mean)
+
+
+# Saving the plots
+p1 <- ggplot(data = summer) + 
+  geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
+  geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
+  scale_color_gradient(low="blue", high="red") +
+  xlab("Year") + ylab("Temperature (°C)") +
+  ggtitle("Summer") + theme(plot.title = element_text(hjust = 0.5)) +
+  labs(colour = "Temp")
+
+p2 <- ggplot(data = fall) + 
+  geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
+  geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
+  scale_color_gradient(low="blue", high="orange") +
+  xlab("Year") + ylab("Temperature (°C)") +
+  ggtitle("Fall") + theme(plot.title = element_text(hjust = 0.5)) +
+  labs(colour = "Temp")
+
+p3 <- ggplot(data = winter) + 
+  geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
+  geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
+  scale_color_gradient(low="blue", high="cyan1") +
+  xlab("Year") + ylab("Temperature (°C)") +
+  ggtitle("Winter") + theme(plot.title = element_text(hjust = 0.5)) +
+  labs(colour = "Temp")
+
+p4 <- ggplot(data = spring) + 
+  geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
+  geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
+  scale_color_gradient(low="blue", high="yellow") +
+  xlab("Year") + ylab("Temperature (°C)") +
+  ggtitle("Spring") + theme(plot.title = element_text(hjust = 0.5)) +
+  labs(colour = "Temp")
+
+# Plotting
+multiplot(p1, p2, p3, p4, cols=2)
+
+
+
+### United Kingdom
+
+tempUK <- temperature[ which(temperature$Country=="United Kingdom"),]
+
+# Creating subsets with the seasons
+winter <- tempUK[ which( as.numeric(format(tempUK$dt, "%m")) == 12 | as.numeric(format(tempUK$dt, "%m")) <= 2 ),]
+winter <- aggregate(x = winter, 
+                    by = list(year = substr(winter$dt, 1, 4)),
+                    FUN = mean)
+
+spring <- tempUK[ which( as.numeric(format(tempUK$dt, "%m")) > 2 & as.numeric(format(tempUK$dt, "%m")) <= 5 ),]
+spring <- aggregate(x = spring, 
+                    by = list(year = substr(spring$dt, 1, 4)),
+                    FUN = mean)
+
+summer <- tempUK[ which( as.numeric(format(tempUK$dt, "%m")) > 5 & as.numeric(format(tempUK$dt, "%m")) <= 8 ),]
+summer <- aggregate(x = summer, 
+                    by = list(year = substr(summer$dt, 1, 4)),
+                    FUN = mean)
+
+fall <- tempUK[ which( as.numeric(format(tempBrazil$dt, "%m")) > 8 & as.numeric(format(tempUK$dt, "%m")) <= 11 ),]
+fall <- aggregate(x = fall, 
+                  by = list(year = substr(fall$dt, 1, 4)),
+                  FUN = mean)
+
+
+# Saving the plots
+p1 <- ggplot(data = summer) + 
+  geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
+  geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
+  scale_color_gradient(low="blue", high="red") +
+  xlab("Year") + ylab("Temperature (°C)") +
+  ggtitle("Summer") + theme(plot.title = element_text(hjust = 0.5)) +
+  labs(colour = "Temp")
+
+p2 <- ggplot(data = fall) + 
+  geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
+  geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
+  scale_color_gradient(low="blue", high="orange") +
+  xlab("Year") + ylab("Temperature (°C)") +
+  ggtitle("Fall") + theme(plot.title = element_text(hjust = 0.5)) +
+  labs(colour = "Temp")
+
+p3 <- ggplot(data = winter) + 
+  geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
+  geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
+  scale_color_gradient(low="blue", high="cyan1") +
+  xlab("Year") + ylab("Temperature (°C)") +
+  ggtitle("Winter") + theme(plot.title = element_text(hjust = 0.5)) +
+  labs(colour = "Temp")
+
+p4 <- ggplot(data = spring) + 
+  geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
+  geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
+  scale_color_gradient(low="blue", high="yellow") +
+  xlab("Year") + ylab("Temperature (°C)") +
+  ggtitle("Spring") + theme(plot.title = element_text(hjust = 0.5)) +
+  labs(colour = "Temp")
+
+# Plotting
+multiplot(p1, p2, p3, p4, cols=2)
