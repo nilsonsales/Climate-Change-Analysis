@@ -1,10 +1,10 @@
-# Loading ggplot2
+# Loading ggplot2 library
 library(ggplot2)
 
 # Loading data
 row_data <- read.table("Projects/R/Data Science/Climate Change/GlobalLandTemperaturesByCountry.csv", quote="", header=TRUE, sep=",")
 
-# Removing empty lines
+# Removing the empty lines
 temperature <- row_data[complete.cases(row_data),]
 head(temperature)
 
@@ -12,13 +12,14 @@ head(temperature)
 temperature$dt <- as.Date(temperature$dt, format="%Y-%m-%d")
 
 
-# Adding new column 'Year'
+# Adding a new column 'Year'
 Year <- format(temperature$dt, "%Y")
 temperature$Year <- Year
 
 
 
 ##### Analysing Brazil, US, UK, Japan and South Africa's temperatures #####
+
 
 ## Brazil
 tempBrazil <- temperature[ which(temperature$Country=="Brazil"),]
@@ -80,7 +81,6 @@ lowerWhisker <- boxplot(tempUK[3])$stats[c(1, 5), ][1]
 upperWhisker <- boxplot(tempUK[3])$stats[c(1, 5), ][2]
 
 tempUK = tempUK[ which(tempUK$AverageTemperature >=  lowerWhisker & tempUK$AverageTemperature <= upperWhisker),]
-
 
 
 ggplot(data = tempUK) + 
