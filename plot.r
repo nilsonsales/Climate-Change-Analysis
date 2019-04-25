@@ -4,6 +4,12 @@ library(ggplot2)
 # Loading data
 row_data <- read.table("Projects/R/Data Science/Climate Change/GlobalLandTemperaturesByCountry.csv", quote="", header=TRUE, sep=",")
 
+# Turning warnings off
+options(warn=-1)
+
+
+### Cleaning and adjusting our data set ###
+
 # Removing the empty lines
 temperature <- row_data[complete.cases(row_data),]
 head(temperature)
@@ -12,14 +18,8 @@ head(temperature)
 temperature$dt <- as.Date(temperature$dt, format="%Y-%m-%d")
 
 
-# Adding a new column 'Year'
-Year <- format(temperature$dt, "%Y")
-temperature$Year <- Year
-
-
 
 ##### Analysing Brazil, US, UK, Japan and South Africa's temperatures #####
-
 
 ## Brazil
 tempBrazil <- temperature[ which(temperature$Country=="Brazil"),]
@@ -54,8 +54,8 @@ tempUS <- aggregate(x = tempUS,
                     FUN = mean)
 
 # Removing the outliers
-lowerWhisker <- boxplot(tempUS[3])$stats[c(1, 5), ][1]
-upperWhisker <- boxplot(tempUS[3])$stats[c(1, 5), ][2]
+lowerWhisker <- boxplot(tempUS[3], plot=FALSE)$stats[c(1, 5), ][1]
+upperWhisker <- boxplot(tempUS[3], plot=FALSE)$stats[c(1, 5), ][2]
 
 tempUS = tempUS[ which(tempUS$AverageTemperature >=  lowerWhisker & tempUS$AverageTemperature <= upperWhisker),]
 
@@ -77,8 +77,8 @@ tempUK <- aggregate(x = tempUK,
                     FUN = mean)
 
 # Removing the outliers
-lowerWhisker <- boxplot(tempUK[3])$stats[c(1, 5), ][1]
-upperWhisker <- boxplot(tempUK[3])$stats[c(1, 5), ][2]
+lowerWhisker <- boxplot(tempUK[3], plot=FALSE)$stats[c(1, 5), ][1]
+upperWhisker <- boxplot(tempUK[3], plot=FALSE)$stats[c(1, 5), ][2]
 
 tempUK = tempUK[ which(tempUK$AverageTemperature >=  lowerWhisker & tempUK$AverageTemperature <= upperWhisker),]
 
