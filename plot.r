@@ -18,7 +18,7 @@ Year <- format(temperature$dt, "%Y")
 temperature$Year <- Year
 
 
-# Plotting Brazil average temperature
+## Plotting Brazil average temperature
 tempBrazil <- temperature[ which(temperature$Country=="Brazil"),]
 
 ggplot(data = tempBrazil) + 
@@ -47,21 +47,27 @@ ggplot(data = tempBrazil) +
 
 
 
-# United States
+## United States
 tempUS = temperature[ which(temperature$Country=="United States"),]
 
 tempUS <- aggregate(x = tempUS, 
                         by = list(year = substr(tempUS$dt, 1, 4)),
                         FUN = mean)
 
+# Removing the outliers
+lowerWhisker <- boxplot(tempUS[3])$stats[c(1, 5), ][1]
+upperWhisker <- boxplot(tempUS[3])$stats[c(1, 5), ][2]
+
+tempUS = tempUS[ which(tempUS$AverageTemperature >=  lowerWhisker & tempUS$AverageTemperature <= upperWhisker),]
+
+
 ggplot(data = tempUS) + 
   geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
   geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
-  scale_color_gradient(low="blue", high="red") +
-  ylim(c(5,12.5))
+  scale_color_gradient(low="blue", high="red")
 
 
-# United Kingdom
+## United Kingdom
 tempUK = temperature[ which(temperature$Country=="United Kingdom"),]
 
 ggplot(data = tempUK) + 
