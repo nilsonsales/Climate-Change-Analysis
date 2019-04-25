@@ -13,23 +13,17 @@ temperature$dt <- as.Date(temperature$dt, format="%Y-%m-%d")
 temperature$dt
 
 
-# grouping by contry  
-ggplot(data = temperature) + 
-  geom_point(mapping =  aes(x = dt, y = AverageTemperature))
-
 
 # Plotting Brazil average temperature
 tempBrazil <- temperature[ which(temperature$Country=="Brazil"),]
-
-tail(tempBrazil)
 
 ggplot(data = tempBrazil) + 
   geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
   geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
   scale_color_gradient(low="blue", high="red") +
-  xlab("Years") + ylab("Temperature") +
+  xlab("Year") + ylab("Temperature") +
   ggtitle("Brazil Average Temperature 1932-2013") + theme(plot.title = element_text(hjust = 0.5)) +
-  labs(colour = "Temperature")
+  labs(colour = "Temp")
 
 
 # United States
