@@ -26,12 +26,19 @@ tail(temperature)
 ## Brazil
 tempBrazil <- temperature[ which(temperature$Country=="Brazil"),]
 
+# Generating title with initial and last years
+firstYear <- format(tempBrazil$dt[1], "%Y")
+lastYear <- format(tempBrazil$dt[length(tempBrazil$dt)], "%Y")
+
+title = paste("Brazil Average Temperature ", firstYear,"-", lastYear, sep="")
+
+
 ggplot(data = tempBrazil) + 
   geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
   geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
   scale_color_gradient(low="blue", high="red") +
   xlab("Year") + ylab("Temperature (°C)") +
-  ggtitle("Brazil Average Temperature 1932-2013") + theme(plot.title = element_text(hjust = 0.5)) +
+  ggtitle(title) + theme(plot.title = element_text(hjust = 0.5)) +
   labs(colour = "Temp")
 
 # Getting the average temperature per year
@@ -44,13 +51,21 @@ ggplot(data = tempBrazil) +
   geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
   scale_color_gradient(low="blue", high="red") +
   xlab("Year") + ylab("Temperature (°C)") +
-  ggtitle("Brazil Average Temperature 1932-2013") + theme(plot.title = element_text(hjust = 0.5)) +
+  ggtitle(title) + theme(plot.title = element_text(hjust = 0.5)) +
   labs(colour = "Temp")
 
 
 ## United States
 tempUS = temperature[ which(temperature$Country=="United States"),]
 
+# Generating title with initial and last years
+firstYear <- format(tempUS$dt[1], "%Y")
+lastYear <- format(tempUS$dt[length(tempUS$dt)], "%Y")
+
+title = paste("US Average Temperature ", firstYear,"-", lastYear, sep="")
+
+
+# Agreggating the data by year
 tempUS <- aggregate(x = tempUS, 
                     by = list(year = substr(tempUS$dt, 1, 4)),
                     FUN = mean)
@@ -74,6 +89,14 @@ ggplot(data = tempUS) +
 ## United Kingdom
 tempUK = temperature[ which(temperature$Country=="United Kingdom"),]
 
+# Generating title with initial and last years
+firstYear <- format(tempUK$dt[1], "%Y")
+lastYear <- format(tempUK$dt[length(tempUK$dt)], "%Y")
+
+title = paste("UK Average Temperature ", firstYear,"-", lastYear, sep="")
+
+
+# Agreggating the data by year
 tempUK <- aggregate(x = tempUK, 
                     by = list(year = substr(tempUK$dt, 1, 4)),
                     FUN = mean)
@@ -97,9 +120,18 @@ ggplot(data = tempUK) +
 ## Japan
 tempJapan = temperature[ which(temperature$Country=="Japan"),]
 
+# Generating title with initial and last years
+firstYear <- format(tempJapan$dt[1], "%Y")
+lastYear <- format(tempJapan$dt[length(tempJapan$dt)], "%Y")
+
+title = paste("Japan Average Temperature ", firstYear,"-", lastYear, sep="")
+
+
+# Agreggating the data by year
 tempJapan <- aggregate(x = tempJapan, 
                        by = list(year = substr(tempJapan$dt, 1, 4)),
                        FUN = mean)
+
 
 ggplot(data = tempJapan) + 
   geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
@@ -113,9 +145,18 @@ ggplot(data = tempJapan) +
 ## South Africa
 tempSA = temperature[ which(temperature$Country=="South Africa"),]
 
+# Generating title with initial and last years
+firstYear <- format(tempSA$dt[1], "%Y")
+lastYear <- format(tempSA$dt[length(tempSA$dt)], "%Y")
+
+title = paste("South Africa Average Temperature ", firstYear,"-", lastYear, sep="")
+
+
+# Agreggating the data by year
 tempSA <- aggregate(x = tempSA, 
                     by = list(year = substr(tempSA$dt, 1, 4)),
                     FUN = mean)
+
 
 ggplot(data = tempSA) + 
   geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
