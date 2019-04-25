@@ -64,7 +64,35 @@ ggplot(data = tempUS) +
 # United Kingdom
 tempUK = temperature[ which(temperature$Country=="United Kingdom"),]
 
+tempUK <- aggregate(x = tempUK, 
+                    by = list(year = substr(tempUK$dt, 1, 4)),
+                    FUN = mean)
+
 ggplot(data = tempUK) + 
+  geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
+  geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
+  scale_color_gradient(low="blue", high="red")
+
+# Japan
+tempJapan = temperature[ which(temperature$Country=="Japan"),]
+
+tempJapan <- aggregate(x = tempJapan, 
+                    by = list(year = substr(tempJapan$dt, 1, 4)),
+                    FUN = mean)
+
+ggplot(data = tempJapan) + 
+  geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
+  geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
+  scale_color_gradient(low="blue", high="red")
+
+# South Africa
+tempSA = temperature[ which(temperature$Country=="South Africa"),]
+
+tempSA <- aggregate(x = tempSA, 
+                       by = list(year = substr(tempSA$dt, 1, 4)),
+                       FUN = mean)
+
+ggplot(data = tempSA) + 
   geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
   geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
   scale_color_gradient(low="blue", high="red")
