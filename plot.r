@@ -276,9 +276,13 @@ multiplot(p1, p2, p3, p4, cols=2)
 
 
 
-### United Kingdom
+## United Kingdom
 
+#Reload the full dataset
 tempUK <- temperature[ which(temperature$Country=="United Kingdom"),]
+
+# Cleaning the old variables
+rm(summer, fall, winter, spring)
 
 # Creating subsets with the seasons
 winter <- tempUK[ which( as.numeric(format(tempUK$dt, "%m")) == 12 | as.numeric(format(tempUK$dt, "%m")) <= 2 ),]
@@ -296,10 +300,11 @@ summer <- aggregate(x = summer,
                     by = list(year = substr(summer$dt, 1, 4)),
                     FUN = mean)
 
-fall <- tempUK[ which( as.numeric(format(tempBrazil$dt, "%m")) > 8 & as.numeric(format(tempUK$dt, "%m")) <= 11 ),]
+fall <- tempUK[ which( as.numeric(format(tempUK$dt, "%m")) > 8 & as.numeric(format(tempUK$dt, "%m")) <= 11 ),]
 fall <- aggregate(x = fall, 
-                  by = list(year = substr(fall$dt, 1, 4)),
-                  FUN = mean)
+                    by = list(year = substr(fall$dt, 1, 4)),
+                    FUN = mean)
+
 
 
 # Saving the plots
