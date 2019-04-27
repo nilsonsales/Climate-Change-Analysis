@@ -2,7 +2,28 @@
 library(ggplot2)
 
 
-# Defining multiplot function
+# Defining functions
+
+generate_title <- function(dataset, country){
+
+  firstYear <- format(dataset$dt[1], "%Y")
+  lastYear <- format(dataset$dt[length(dataset$dt)], "%Y")
+
+  title <- paste(country, " Average Temperature ", firstYear,"-", lastYear, sep="")
+}
+
+
+generate_plot <- function(dataset, high_gradient="red"){
+  ggplot(data = dataset) + 
+    geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
+    geom_smooth(mapping = aes(x = dt, y = AverageTemperature), method = 'loess') +
+    scale_color_gradient(low="blue", high=high_gradient) +
+    xlab("Year") + ylab("Temperature (°C)") +
+    labs(colour = "Temp")
+  
+}
+
+
 multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
   require(grid)
   
@@ -67,46 +88,38 @@ tail(temperature)
 ## Brazil
 tempBrazil <- temperature[ which(temperature$Country=="Brazil"),]
 
-# Generating title with initial and last years
-firstYear <- format(tempBrazil$dt[1], "%Y")
-lastYear <- format(tempBrazil$dt[length(tempBrazil$dt)], "%Y")
 
-title = paste("Brazil Average Temperature ", firstYear,"-", lastYear, sep="")
+# Creating a title with initial and last years available
+title <- generate_title(tempBrazil, "Brazil")
+
+# Creating and saving our plot
+BrazilPlot <- generate_plot(tempBrazil) +
+   ggtitle(title) + theme(plot.title = element_text(hjust = 0.5))
+
+# Showing our plot
+print(BrazilPlot)
 
 
-ggplot(data = tempBrazil) + 
-  geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
-  geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
-  scale_color_gradient(low="blue", high="red") +
-  xlab("Year") + ylab("Temperature (°C)") +
-  ggtitle(title) + theme(plot.title = element_text(hjust = 0.5)) +
-  labs(colour = "Temp")
-
-# Getting the average temperature per year
+# Aggregating the data by year
 tempBrazil <- aggregate(x = tempBrazil, 
                         by = list(year = substr(tempBrazil$dt, 1, 4)),
                         FUN = mean)
 
-ggplot(data = tempBrazil) + 
-  geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
-  geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
-  scale_color_gradient(low="blue", high="red") +
-  xlab("Year") + ylab("Temperature (°C)") +
-  ggtitle(title) + theme(plot.title = element_text(hjust = 0.5)) +
-  labs(colour = "Temp")
+# Generating the new plot
+brazilPlot <- generate_plot(tempBrazil) +
+  ggtitle(title) + theme(plot.title = element_text(hjust = 0.5))
+
+print(brazilPlot)
 
 
 ## United States
 tempUS = temperature[ which(temperature$Country=="United States"),]
 
-# Generating title with initial and last years
-firstYear <- format(tempUS$dt[1], "%Y")
-lastYear <- format(tempUS$dt[length(tempUS$dt)], "%Y")
 
-title = paste("US Average Temperature ", firstYear,"-", lastYear, sep="")
+title = generate_title(tempUS, "US")
 
 
-# Agreggating the data by year
+#Aggregating the data by year
 tempUS <- aggregate(x = tempUS, 
                     by = list(year = substr(tempUS$dt, 1, 4)),
                     FUN = mean)
@@ -118,26 +131,20 @@ upperWhisker <- boxplot(tempUS[3], plot=FALSE)$stats[c(1, 5), ][2]
 tempUS = tempUS[ which(tempUS$AverageTemperature >=  lowerWhisker & tempUS$AverageTemperature <= upperWhisker),]
 
 
-ggplot(data = tempUS) + 
-  geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
-  geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
-  scale_color_gradient(low="blue", high="red") +
-  xlab("Year") + ylab("Temperature (°C)") +
-  ggtitle("US Average Temperature 1768-2013") + theme(plot.title = element_text(hjust = 0.5)) +
-  labs(colour = "Temp")
+US_Plot <- generate_plot(tempUS) +
+  ggtitle(title) + theme(plot.title = element_text(hjust = 0.5))
+
+print(US_Plot)
 
 
 ## United Kingdom
 tempUK = temperature[ which(temperature$Country=="United Kingdom"),]
 
+
 # Generating title with initial and last years
-firstYear <- format(tempUK$dt[1], "%Y")
-lastYear <- format(tempUK$dt[length(tempUK$dt)], "%Y")
+title <- generate_title(tempUK, "UK")
 
-title = paste("UK Average Temperature ", firstYear,"-", lastYear, sep="")
-
-
-# Agreggating the data by year
+# Aggregating the data by year
 tempUK <- aggregate(x = tempUK, 
                     by = list(year = substr(tempUK$dt, 1, 4)),
                     FUN = mean)
@@ -149,48 +156,37 @@ upperWhisker <- boxplot(tempUK[3], plot=FALSE)$stats[c(1, 5), ][2]
 tempUK = tempUK[ which(tempUK$AverageTemperature >=  lowerWhisker & tempUK$AverageTemperature <= upperWhisker),]
 
 
-ggplot(data = tempUK) + 
-  geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
-  geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
-  scale_color_gradient(low="blue", high="red") +
-  xlab("Year") + ylab("Temperature (°C)") +
-  ggtitle("UK Average Temperature 1743-2013") + theme(plot.title = element_text(hjust = 0.5)) +
-  labs(colour = "Temp")
+UK_Plot <- generate_plot(tempUK) +
+  ggtitle(title) + theme(plot.title = element_text(hjust = 0.5))
+
+print(UK_Plot)
 
 
 ## Japan
 tempJapan = temperature[ which(temperature$Country=="Japan"),]
 
+
 # Generating title with initial and last years
-firstYear <- format(tempJapan$dt[1], "%Y")
-lastYear <- format(tempJapan$dt[length(tempJapan$dt)], "%Y")
-
-title = paste("Japan Average Temperature ", firstYear,"-", lastYear, sep="")
+title <- generate_title(tempJapan, "Japan")
 
 
-# Agreggating the data by year
+# Aggregating the data by year
 tempJapan <- aggregate(x = tempJapan, 
                        by = list(year = substr(tempJapan$dt, 1, 4)),
                        FUN = mean)
 
+japanPlot <- generate_plot(tempJapan) +
+  ggtitle(title) + theme(plot.title = element_text(hjust = 0.5))
 
-ggplot(data = tempJapan) + 
-  geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
-  geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
-  scale_color_gradient(low="blue", high="red") +
-  xlab("Year") + ylab("Temperature (°C)") +
-  ggtitle("Japan Average Temperature 1841-2013") + theme(plot.title = element_text(hjust = 0.5)) +
-  labs(colour = "Temp")
+print(japanPlot)
 
 
 ## South Africa
 tempSA = temperature[ which(temperature$Country=="South Africa"),]
 
-# Generating title with initial and last years
-firstYear <- format(tempSA$dt[1], "%Y")
-lastYear <- format(tempSA$dt[length(tempSA$dt)], "%Y")
 
-title = paste("South Africa Average Temperature ", firstYear,"-", lastYear, sep="")
+# Generating title with initial and last years
+title <- generate_title(tempSA, "South Africa")
 
 
 # Agreggating the data by year
@@ -198,17 +194,13 @@ tempSA <- aggregate(x = tempSA,
                     by = list(year = substr(tempSA$dt, 1, 4)),
                     FUN = mean)
 
+SA_Plot <- generate_plot(tempSA) +
+  ggtitle(title) + theme(plot.title = element_text(hjust = 0.5))
 
-ggplot(data = tempSA) + 
-  geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
-  geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
-  scale_color_gradient(low="blue", high="red") +
-  xlab("Year") + ylab("Temperature (°C)") +
-  ggtitle("South Africa Average Temperature 1857-2013") + theme(plot.title = element_text(hjust = 0.5)) +
-  labs(colour = "Temp")
+print(SA_Plot)
 
 
-#### Now lets separete it per season and compare
+#### Now lets separete it by season and compare
 #### two countries in different hemispheres
 
 ## Brazil
@@ -238,38 +230,18 @@ spring <- aggregate(x = spring,
                     FUN = mean)
 
 
-# Saving the plots
-p1 <- ggplot(data = summer) + 
-  geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
-  geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
-  scale_color_gradient(low="blue", high="red") +
-  xlab("Year") + ylab("Temperature (°C)") +
-  ggtitle("Summer") + theme(plot.title = element_text(hjust = 0.5)) +
-  labs(colour = "Temp")
+# Saving plots
+p1 <- generate_plot(summer) +
+  ggtitle("Summer") + theme(plot.title = element_text(hjust = 0.5))
 
-p2 <- ggplot(data = fall) + 
-  geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
-  geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
-  scale_color_gradient(low="blue", high="orange") +
-  xlab("Year") + ylab("Temperature (°C)") +
-  ggtitle("Fall") + theme(plot.title = element_text(hjust = 0.5)) +
-  labs(colour = "Temp")
+p2 <- generate_plot(fall, "orange") +
+  ggtitle("Fall") + theme(plot.title = element_text(hjust = 0.5))
 
-p3 <- ggplot(data = winter) + 
-  geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
-  geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
-  scale_color_gradient(low="blue", high="cyan1") +
-  xlab("Year") + ylab("Temperature (°C)") +
-  ggtitle("Winter") + theme(plot.title = element_text(hjust = 0.5)) +
-  labs(colour = "Temp")
+p3 <- generate_plot(winter, "cyan1") +
+  ggtitle("Winter") + theme(plot.title = element_text(hjust = 0.5))
 
-p4 <- ggplot(data = spring) + 
-  geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
-  geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
-  scale_color_gradient(low="blue", high="yellow") +
-  xlab("Year") + ylab("Temperature (°C)") +
-  ggtitle("Spring") + theme(plot.title = element_text(hjust = 0.5)) +
-  labs(colour = "Temp")
+p4 <- generate_plot(spring, "yellow") +
+  ggtitle("Spring") + theme(plot.title = element_text(hjust = 0.5))
 
 # Plotting
 multiplot(p1, p2, p3, p4, cols=2)
@@ -306,39 +278,19 @@ fall <- aggregate(x = fall,
                     FUN = mean)
 
 
+# Saving plots
+p1 <- generate_plot(summer) +
+  ggtitle("Summer") + theme(plot.title = element_text(hjust = 0.5))
 
-# Saving the plots
-p1 <- ggplot(data = summer) + 
-  geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
-  geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
-  scale_color_gradient(low="blue", high="red") +
-  xlab("Year") + ylab("Temperature (°C)") +
-  ggtitle("Summer") + theme(plot.title = element_text(hjust = 0.5)) +
-  labs(colour = "Temp")
+p2 <- generate_plot(fall, "orange") +
+  ggtitle("Fall") + theme(plot.title = element_text(hjust = 0.5))
 
-p2 <- ggplot(data = fall) + 
-  geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
-  geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
-  scale_color_gradient(low="blue", high="orange") +
-  xlab("Year") + ylab("Temperature (°C)") +
-  ggtitle("Fall") + theme(plot.title = element_text(hjust = 0.5)) +
-  labs(colour = "Temp")
+p3 <- generate_plot(winter, "cyan1") +
+  ggtitle("Winter") + theme(plot.title = element_text(hjust = 0.5))
 
-p3 <- ggplot(data = winter) + 
-  geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
-  geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
-  scale_color_gradient(low="blue", high="cyan1") +
-  xlab("Year") + ylab("Temperature (°C)") +
-  ggtitle("Winter") + theme(plot.title = element_text(hjust = 0.5)) +
-  labs(colour = "Temp")
+p4 <- generate_plot(spring, "yellow") +
+  ggtitle("Spring") + theme(plot.title = element_text(hjust = 0.5))
 
-p4 <- ggplot(data = spring) + 
-  geom_point(mapping =  aes(x = dt, y = AverageTemperature, colour=AverageTemperature)) +
-  geom_smooth(mapping = aes(x = dt, y = AverageTemperature)) +
-  scale_color_gradient(low="blue", high="yellow") +
-  xlab("Year") + ylab("Temperature (°C)") +
-  ggtitle("Spring") + theme(plot.title = element_text(hjust = 0.5)) +
-  labs(colour = "Temp")
 
 # Plotting
 multiplot(p1, p2, p3, p4, cols=2)
